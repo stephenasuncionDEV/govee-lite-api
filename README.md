@@ -36,7 +36,7 @@ H7132, H7150, H7160, H7101, H7111
 
 ![Technologies](https://skillicons.dev/icons?i=cpp&theme=light)
 
-Other: [cURL](https://curl.se/)
+Other: [cURL](https://curl.se/), [https://github.com/nlohmann/json](https://github.com/nlohmann/json)
 
 ## Support
 
