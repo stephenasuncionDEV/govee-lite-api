@@ -1,14 +1,31 @@
 #include "govee.h"
 
+/**
+ * Initializes Govee Lite API.
+ *
+ * @param INPUT_API_KEY - Personal API key from Govee
+ */
 Govee::Govee(const std::string& INPUT_API_KEY) {
 	API_KEY = INPUT_API_KEY;
 }
 
+/**
+ * Initializes GoveeDeviceObj.
+ *
+ * @param INPUT_API_KEY - Personal API key from Govee
+ * @param device - GoveeDevice object to wrap on
+ */
 Govee::GoveeDeviceObj::GoveeDeviceObj(const std::string & INPUT_API_KEY, GoveeDevice device) {
 	API_KEY = INPUT_API_KEY;
 	info = device;
 }
 
+/**
+ * gets all the devices of your account.
+ *
+ * @param log - if true, it logs all the devices
+ * @return a vector of GoveeDeviceObj where you can control your lights
+ */
 std::vector<Govee::GoveeDeviceObj> Govee::getDevices(bool log) {
 	auto res = getReq("/devices");
 	auto jsonData = json::parse(res);
@@ -31,6 +48,11 @@ std::vector<Govee::GoveeDeviceObj> Govee::getDevices(bool log) {
 	return ret;
 }
 
+/**
+ * turns on the device of the current GoveeDeviceObj
+ *
+ * @return a boolean that indicates if the request was successful
+ */
 bool Govee::GoveeDeviceObj::turnOn() {
 	std::string data =
 		"{\"device\":\"" + this->info.device +
@@ -47,6 +69,11 @@ bool Govee::GoveeDeviceObj::turnOn() {
 	return false;
 }
 
+/**
+ * turns off the device of the current GoveeDeviceObj
+ *
+ * @return a boolean that indicates if the request was successful
+ */
 bool Govee::GoveeDeviceObj::turnOff() {
 	std::string data = 
 		"{\"device\":\"" + this->info.device +
@@ -63,6 +90,12 @@ bool Govee::GoveeDeviceObj::turnOff() {
 	return false;
 }
 
+/**
+ * gets information from Govee's API.
+ *
+ * @param endpoint - api route to Govee
+ * @return a string of the GET request response data
+ */
 std::string Govee::getReq(const std::string& endpoint) {
 	CURL* curl = curl_easy_init();
 	if (!curl) {
@@ -94,6 +127,13 @@ std::string Govee::getReq(const std::string& endpoint) {
 	return ret;
 }
 
+/**
+ * sends data to govee API to control lights.
+ *
+ * @param endpoint - api route to Govee
+ * @param data - a json string containing the intended request
+ * @return a string of the PUT request response data
+ */
 std::string Govee::GoveeDeviceObj::postReq(const std::string& endpoint, const std::string& data) {
 	CURL* curl = curl_easy_init();
 	if (!curl) {
